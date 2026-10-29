@@ -1,8 +1,8 @@
 # jus-software
 
-Sistema web de gestão para escritório de advocacia: intimações do DJEN capturadas automaticamente, cálculo de prazos com calendário forense, geração de documentos e financeiro com divisão de honorários entre parceiros.
+Sistema de gestão para escritório de advocacia: intimações do DJEN capturadas automaticamente, cálculo de prazos com calendário forense, geração de documentos e financeiro com divisão de honorários entre parceiros.
 
-**Em produção desde outubro de 2026**, usado no dia a dia por uma advogada autônoma e seus parceiros. Construído por uma pessoa, do zero ao ar em cerca de 20 dias, com desenvolvimento orientado por IA (Claude Code).
+**Em produção desde outubro de 2026**, usado no dia a dia por uma advogada autônoma e seus parceiros. Construído por uma pessoa, do zero ao ar em cerca de 20 dias, com desenvolvimento assistido por IA (Claude Code).
 
 ---
 
@@ -37,11 +37,11 @@ Um sistema único, no computador e no celular, que:
 
 ---
 
-## Como foi construído com IA
+## Como foi construído com ajuda de IA
 
-O código foi escrito com **Claude Code**. O meu trabalho foi definir o produto, orquestrar o agente e validar cada entrega:
+O código foi escrito com ajuda do **Claude Code**. O meu trabalho foi definir o produto, orquestrar o agente, revisar os códigos e validar cada entrega:
 
-1. **Especificação primeiro.** Levantei as regras com a advogada e escrevi uma especificação de negócio, que virou a fonte da verdade do agente. As telas foram prototipadas no Claude Design antes de qualquer código.
+1. **Especificação primeiro.** Levantei as regras com a advogada e escrevi uma especificação de negócio, que virou a fonte da verdade do agente. As telas foram prototipadas por mim com Claude Design antes de qualquer código.
 2. **Regras para o agente.** Um `CLAUDE.md` fixa o que não se negocia (autorização sempre no servidor, LGPD, "o sistema nunca cria prazo sozinho") e as convenções do código. Tudo o que a regra não cobre o agente para e pergunta.
 3. **Construção em fases.** Foram 8 fases (fundação, cadastros, agenda, calendário forense, intimações, documentos, financeiro e celular). Cada fase só começava com a anterior testada.
 4. **Validação.** Cada fase passava por testes automatizados, revisão de permissões, conferência lado a lado com o protótipo (no computador e no celular) e um roteiro de teste manual.
