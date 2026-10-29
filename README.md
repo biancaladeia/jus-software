@@ -8,6 +8,23 @@ Plataforma full-stack de gestão operacional e inteligência jurídica concebida
 
 O **`jus-software`** é uma solução de software orientada a processos que substitui a fragmentação de ferramentas operacionais por uma arquitetura unificada. Projetado com uma responsividade total para desktop e mobile, o sistema integra o acompanhamento automático de publicações dos tribunais, a extração preditiva de prazos, a geração parametrizada de documentos e o controlo financeiro avançado com divisão proporcional de honorários.
 
+## Interface & Demonstração do Produto
+
+<div align="center">
+
+### Painel Geral (Desktop)
+<img width="776" height="502" alt="Captura de Tela 2026-10-29 às 8 03 51 PM" src="https://github.com/user-attachments/assets/2c7b32cb-baf3-4d22-b97c-4f70062a2a9e" />
+
+### Automação de Intimações & Sugestão Preditiva de Prazos
+<img width="591" height="451" alt="Captura de Tela 2026-10-29 às 8 05 00 PM" src="https://github.com/user-attachments/assets/ef9a4b6f-1e7e-4fa8-842b-719065310522" />
+
+### Experiência Mobile Responsiva
+<img width="1038" height="677" alt="Captura de Tela 2026-10-29 às 8 06 06 PM" src="https://github.com/user-attachments/assets/3adf5c54-5640-4441-b5f5-6db44a110dcc" />
+
+</div>
+
+
+
 ---
 
 ## Tech Stack & Arquitetura
@@ -42,6 +59,9 @@ O **`jus-software`** é uma solução de software orientada a processos que subs
 ### 5. Navegação & Experiência Multi-Dispositivo
 * Interface Desktop com painéis laterais (gavetas) e fluxos contextuais sem perda de navegação.
 * Aplicação móvel com suporte a captura de documentos via câmara, verificação de notificações e gestão completa em mobilidade.
+
+### 6. Link da Aplicação:
+* [https://escritorio.giuliadamore.com.br](https://escritorio.giuliadamore.com.br)
 
 ---
 
