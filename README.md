@@ -1,70 +1,72 @@
 # jus-software
 
-Plataforma full-stack de gestão operacional e inteligência jurídica concebida para centralizar, automatizar e otimizar fluxos de trabalho em escritórios de advocacia.
+Sistema web de gestão para escritório de advocacia: intimações do DJEN capturadas automaticamente, cálculo de prazos com calendário forense, geração de documentos e financeiro com divisão de honorários entre parceiros.
+
+**Em produção desde outubro de 2026**, usado no dia a dia por uma advogada autônoma e seus parceiros. Construído por uma pessoa, do zero ao ar em cerca de 20 dias, com desenvolvimento orientado por IA (Claude Code).
 
 ---
 
-## Visão Geral
+## O problema
 
-O **`jus-software`** é uma solução de software orientada a processos que substitui a fragmentação de ferramentas operacionais por uma arquitetura unificada. Projetado com uma responsividade total para desktop e mobile, o sistema integra o acompanhamento automático de publicações dos tribunais, a extração preditiva de prazos, a geração parametrizada de documentos e o controlo financeiro avançado com divisão proporcional de honorários.
+A advogada controlava tudo em planilhas e numa pasta do Google Drive por cliente: processos, prazos, honorários divididos com parceiros (nem sempre 50/50) e documentos. As intimações eram lidas uma a uma no diário oficial, e cada prazo era contado à mão, considerando feriados e suspensões de cada tribunal.
 
-## Interface & Demonstração do Produto
+## A solução
+
+Um sistema único, no computador e no celular, que:
+
+- **Captura as intimações do DJEN** duas vezes por dia pela OAB da advogada e faz a triagem: se o processo já está cadastrado, a intimação vai para ele; se não está, fica "A classificar".
+- **Sugere o prazo** com base no calendário forense (feriados, suspensões e recessos do TJBA e do TJSP, cada data com a fonte do ato oficial) e na regra do CPC. **O sistema nunca cria um prazo sozinho**: ele sugere, e a advogada confirma a data fatal.
+- **Gera procurações, contratos e declarações** a partir de modelos do próprio escritório, preenchidos com os dados do cliente e do processo. Se falta algum dado, o documento é bloqueado e o sistema avisa o que falta.
+- **Controla o financeiro**: honorários iniciais (em R$ ou em salários mínimos), êxito, sucumbência e avulsos, com divisão automática entre a titular e até dois parceiros.
+- **Controla o acesso por perfil**: a titular vê tudo; cada parceiro vê só os processos em que participa, e nunca vê o financeiro.
+
+## Telas
 
 <div align="center">
 
-### Painel Geral (Desktop)
-<img width="776" height="502" alt="Captura de Tela 2026-10-29 às 8 03 51 PM" src="https://github.com/user-attachments/assets/2c7b32cb-baf3-4d22-b97c-4f70062a2a9e" />
+### Painel (computador)
+<img width="776" height="502" alt="Painel do sistema no computador" src="https://github.com/user-attachments/assets/2c7b32cb-baf3-4d22-b97c-4f70062a2a9e" />
 
-### Automação de Intimações & Sugestão Preditiva de Prazos
-<img width="591" height="451" alt="Captura de Tela 2026-10-29 às 8 05 00 PM" src="https://github.com/user-attachments/assets/ef9a4b6f-1e7e-4fa8-842b-719065310522" />
+### Intimações e sugestão de prazo
+<img width="591" height="451" alt="Tela de intimações com sugestão de prazo" src="https://github.com/user-attachments/assets/ef9a4b6f-1e7e-4fa8-842b-719065310522" />
 
-### Experiência Mobile Responsiva
-<img width="1038" height="677" alt="Captura de Tela 2026-10-29 às 8 06 06 PM" src="https://github.com/user-attachments/assets/3adf5c54-5640-4441-b5f5-6db44a110dcc" />
+### Celular
+<img width="1038" height="677" alt="Telas do sistema no celular" src="https://github.com/user-attachments/assets/3adf5c54-5640-4441-b5f5-6db44a110dcc" />
 
 </div>
 
+---
 
+## Como foi construído com IA
+
+O código foi escrito com **Claude Code**. O meu trabalho foi definir o produto, orquestrar o agente e validar cada entrega:
+
+1. **Especificação primeiro.** Levantei as regras com a advogada e escrevi uma especificação de negócio, que virou a fonte da verdade do agente. As telas foram prototipadas no Claude Design antes de qualquer código.
+2. **Regras para o agente.** Um `CLAUDE.md` fixa o que não se negocia (autorização sempre no servidor, LGPD, "o sistema nunca cria prazo sozinho") e as convenções do código. Tudo o que a regra não cobre o agente para e pergunta.
+3. **Construção em fases.** Foram 8 fases (fundação, cadastros, agenda, calendário forense, intimações, documentos, financeiro e celular). Cada fase só começava com a anterior testada.
+4. **Validação.** Cada fase passava por testes automatizados, revisão de permissões, conferência lado a lado com o protótipo (no computador e no celular) e um roteiro de teste manual.
+
+**Em números:** cerca de 250 commits entre 9 e 28 de outubro de 2026, 78 arquivos de teste e CI em todo push.
+
+## Decisões de que me orgulho
+
+- **Permissões testadas por matriz.** Cada rota da API é testada contra todos os perfis, e uma rota nova sem linha na matriz derruba o CI.
+- **Regras críticas também no banco.** A divisão de honorários tem que somar 100%, e isso é garantido por trigger no banco, não só pela tela. Um estorno é sempre um lançamento novo, nunca a edição do anterior.
+- **IA onde é seguro, regra onde precisa ser exato.** O cálculo de prazo é uma função determinística, sem modelo de linguagem, porque prazo fatal não admite "provavelmente". Mesmo assim, a sugestão segue desligada em produção até ser validada com 20 prazos reais.
+- **LGPD de verdade.** Os dados e arquivos ficam no Brasil, em bucket privado com links temporários. Os logs são redigidos, sem CPF, número de processo ou texto de intimação. Há auditoria só de inserção para as ações sensíveis.
+
+## Stack
+
+| Parte | Tecnologias |
+|---|---|
+| Frontend | React, Vite, TypeScript, Tailwind, shadcn/ui, TanStack Query, React Hook Form + Zod |
+| Backend | Node, TypeScript, Fastify, Prisma, Better Auth (2FA TOTP obrigatório), docxtemplater |
+| Dados | PostgreSQL (Supabase, São Paulo), Google Cloud Storage (São Paulo) |
+| Infra | Cloud Run e Firebase Hosting no Brasil, Cloud Scheduler para a captura, Resend para e-mail |
+| Qualidade | Vitest, GitHub Actions (lint, typecheck, testes e build em todo push) |
 
 ---
 
-## Tech Stack & Arquitetura
+## Código-fonte e acesso
 
-* **Frontend & Mobile:** React / TypeScript, Tailwind CSS, componentes responsivos otimizados para ecrã inteiro e dispositivos móveis (PWA/Web).
-* **Backend & Cloud:** Python, Node.js, Supabase (PostgreSQL relacional), Vercel, Resend (envios transacionais), GCP.
-* **Inteligência & Automação:** Leitura e parsing de publicações (DJEN), algoritmo de cálculo de prazos com calendário de dias úteis/feriados e integração de APIs de linguagem.
-* **Segurança:** Autenticação forte com segundo fator (2FA / TOTP), gestão de tokens de recuperação, controlo de acessos por papel (RBAC) e suporte a múltiplas OABs.
-
----
-
-## Módulos do Sistema
-
-### 1. Painel de Controlo & Gestão de Prazos
-* Dashboard executivo com métricas de processos ativos, casos, audiências e priorização de prazos fatais.
-* Leitura em tempo real de tarefas pendentes, compromissos agendados e alertas de urgência.
-
-### 2. Triagem e Processamento de Intimações (DJEN)
-* Captura diária automatizada de publicações de múltiplas inscrições OAB.
-* Análise do texto de despachos e sugestão preditiva de prazos fatais com contagem automática de dias úteis e consideração de feriados.
-* Fluxo de vinculação rápida de intimações a processos e arquivamento de publicações ignoradas.
-
-### 3. Automação de Documentos & Modelos
-* Engine de geração dinâmica de minutas contratuais, procurações e declarações de hipossuficiência.
-* Mapeamento automático de marcadores e preenchimento com dados extraídos da ficha do cliente e do processo.
-
-### 4. Controlo Financeiro & Split de Honorários
-* Módulo financeiro completo para registo de honorários iniciais, êxito, sucumbência e serviços avulsos.
-* Aplicação automática de regras de *split* de receitas e divisão de honorários entre sócios e parceiros externos.
-* Visão consolidada de valores a receber, recebidos e lançamentos em atraso.
-
-### 5. Navegação & Experiência Multi-Dispositivo
-* Interface Desktop com painéis laterais (gavetas) e fluxos contextuais sem perda de navegação.
-* Aplicação móvel com suporte a captura de documentos via câmara, verificação de notificações e gestão completa em mobilidade.
-
-### 6. Link da Aplicação:
-* [https://escritorio.giuliadamore.com.br](https://escritorio.giuliadamore.com.br)
-
----
-
-## 🔒 Nota de Privacidade & Código-Fonte
-
-> O código-fonte deste repositório é mantido sob propriedade confidencial e acesso restrito por motivos de conformidade com a LGPD e segredo de negócio. Este repositório serve como especificação técnica e documentação de arquitetura do produto em produção.
+> O sistema guarda dados reais de clientes. Por isso o código-fonte é privado e o acesso ao sistema é restrito ao escritório. Este repositório documenta o produto e a arquitetura. Posso mostrar uma demonstração com dados fictícios mediante pedido.
