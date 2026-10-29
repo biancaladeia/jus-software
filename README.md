@@ -6,7 +6,7 @@ Plataforma full-stack de gestão operacional e inteligência jurídica concebida
 
 ## Visão Geral
 
-O **`jus-software`** é uma solução de software orientada a processos que substitui a fragmentação de ferramentas operacionais por uma arquitetura unificada. Projetado com uma responsividade total para desktope mobile, o sistema integra o acompanhamento automático de publicações dos tribunais, a extração preditiva de prazos, a geração parametrizada de documentos e o controlo financeiro avançado com divisão proporcional de honorários.
+O **`jus-software`** é uma solução de software orientada a processos que substitui a fragmentação de ferramentas operacionais por uma arquitetura unificada. Projetado com uma responsividade total para desktop e mobile, o sistema integra o acompanhamento automático de publicações dos tribunais, a extração preditiva de prazos, a geração parametrizada de documentos e o controlo financeiro avançado com divisão proporcional de honorários.
 
 ---
 
